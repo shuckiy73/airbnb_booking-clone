@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Footer from "../General page/Footer";
-import NavigateHeader from "../General page/NavigateHeader";
 import Card from "./Card";
 import NotFound from "../General page/NotFound";
 
-const DetailCard = ({ images }) => {
+const DetailCard = () => {
     const { id } = useParams();
     const [objectRoom, setObjectRoom] = useState(null);
     const [reviews, setReviews] = useState(null);
@@ -21,39 +19,63 @@ const DetailCard = ({ images }) => {
     };
 
     useEffect(() => {
+        const abortController = new AbortController();
+
         const fetchData = async () => {
             try {
                 // Запрос данных о комнате
-                const roomResponse = await axios.get(API_URL_ID, { headers: HEADERS });
+                const roomResponse = await axios.get(API_URL_ID, {
+                    headers: HEADERS,
+                    signal: abortController.signal,
+                });
                 setObjectRoom(roomResponse.data);
 
                 // Запрос отзывов
-                const reviewsResponse = await axios.get(API_REVIEWS, { headers: HEADERS });
+                const reviewsResponse = await axios.get(API_REVIEWS, {
+                    headers: HEADERS,
+                    signal: abortController.signal,
+                });
                 setReviews(reviewsResponse.data);
             } catch (error) {
-                console.error("Ошибка при загрузке данных:", error);
-                setError(error);
+                if (!abortController.signal.aborted) {
+                    console.error("Ошибка при загрузке данных:", error);
+                    setError(error);
+                }
             } finally {
-                setLoading(false);
+                if (!abortController.signal.aborted) {
+                    setLoading(false);
+                }
             }
         };
 
         fetchData();
+
+        return () => {
+            abortController.abort(); // Отмена запросов при размонтировании
+        };
     }, [id, API_URL_ID, API_REVIEWS]);
 
     if (loading) {
-        return <div>Загрузка...</div>;
+        return (
+            <div className="text-center mt-5">
+                <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Загрузка...</span>
+                </div>
+            </div>
+        );
     }
 
     if (error) {
-        return <NotFound />;
+        return (
+            <div className="alert alert-danger text-center mt-5">
+                Произошла ошибка при загрузке данных. Пожалуйста, попробуйте позже.
+            </div>
+        );
     }
 
     return (
         <div>
-            <NavigateHeader />
-            <Card item={objectRoom} reviews={reviews} image={images} />
-            <Footer />
+            <Card item={objectRoom} reviews={reviews} />
         </div>
     );
 };

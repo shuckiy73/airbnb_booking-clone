@@ -1,6 +1,6 @@
 import './App.css';
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavigateHeader from "./Components/General page/NavigateHeader";
 import Footer from "./Components/General page/Footer";
 import HomePage from "./Components/Main page/HomePage";
@@ -12,25 +12,36 @@ import RegisterPage from "./Components/Authorization/RegisterPage";
 import ForgotPage from "./Components/Authorization/ForgotPage";
 import ProfilePage from "./Components/Authorization/ProfilePage";
 
+const ROUTES = {
+  HOME: "/",
+  SEARCH: "/search",
+  DETAIL: "/search/:id",
+  LOGIN: "/login",
+  REGISTER: "/register",
+  FORGOT: "/forgot",
+  PROFILE: "/profile/:id",
+  NOT_FOUND: "*",
+};
+
 function App() {
-    return (
-        <Router>
-            <div className="wrapper">
-                <NavigateHeader /> {/* Добавлен NavigateHeader для отображения на всех страницах */}
-                <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/search" element={<Search />} />
-                    <Route path="/search/:id" element={<DetailCard />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/register" element={<RegisterPage />} />
-                    <Route path="/forgot" element={<ForgotPage />} />
-                    <Route path="/profile/:id" element={<ProfilePage />} />
-                    <Route path="*" element={<NotFound />} />
-                </Routes>
-                <Footer /> {/* Добавлен Footer для отображения на всех страницах */}
-            </div>
-        </Router>
-    );
+  return (
+    <Router>
+      <div className="wrapper">
+        <NavigateHeader />
+        <Routes>
+          <Route path={ROUTES.HOME} element={<HomePage />} />
+          <Route path={ROUTES.SEARCH} element={<Search />} />
+          <Route path={ROUTES.DETAIL} element={<DetailCard />} />
+          <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+          <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
+          <Route path={ROUTES.FORGOT} element={<ForgotPage />} />
+          <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+          <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
+  );
 }
 
 export default App;

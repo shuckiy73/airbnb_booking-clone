@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import NavigateHeader from "../General page/NavigateHeader";
-import jwt_decode from "jwt-decode";
+// import jwt_decode from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
 
 const ProfilePage = () => {
   const { id } = useParams();
@@ -14,7 +15,7 @@ const ProfilePage = () => {
   const parseJwt = (token) => {
     if (!token) return null;
     try {
-      return jwt_decode(token);
+      return jwtDecode(token);
     } catch (error) {
       console.error("Ошибка при декодировании токена:", error);
       return null;

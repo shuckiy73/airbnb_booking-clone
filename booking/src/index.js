@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './redux/store';
-import ErrorBoundary from './components/ErrorBoundary';
+import ErrorBoundary from './Components/ErrorBoundary'; 
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -23,3 +23,4 @@ root.render(
 
 // Отправка метрик производительности
 reportWebVitals(console.log); // или reportWebVitals(sendToAnalytics);
+

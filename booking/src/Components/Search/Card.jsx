@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Используем useNavigate вместо Routes
 import axios from "axios";
 import Booking from "./Booking";
 import Reviews from "./reviews/Reviews";
 import TotalStars from "./reviews/TotalStars";
 import SendReview from "./reviews/SendReview";
-import ImagesC from "../Main page/ImageCarousel";
+import ImageCarousel from '../Main page/ImageCarousel'; 
 import { Box } from "@mui/material";
 
 const Card = ({ item, reviews }) => {
   const [stars, setStars] = useState({});
   const [images, setImages] = useState([]);
+  const navigate = useNavigate(); // Хук для навигации
 
   const API_ALL_STARTS_RATING = "http://127.0.0.1:8000/api/v1/get_object_rating/";
   const API_GET_IMAGES = "http://127.0.0.1:8000/api/v1/get_object_images/";
@@ -72,7 +73,7 @@ const Card = ({ item, reviews }) => {
             <div className="container">
               {images.length ? (
                 <Box sx={{ maxWidth: 800, flexGrow: 1, margin: "auto", mt: 5 }}>
-                  <ImagesC image_list={images} height={600} />
+                  <ImageCarousel image_list={images} height={600} />
                 </Box>
               ) : (
                 <img src="/image/user_objects/nophoto_object.jpg" alt="Заглушка" />
@@ -168,7 +169,7 @@ const Card = ({ item, reviews }) => {
                         <SendReview />
                       ) : (
                         <div className="col-md">
-                          <a href="/login">Авторизуйтесь</a> для того что бы оставить отзыв!
+                          <Link to="/login">Авторизуйтесь</Link> для того что бы оставить отзыв!
                         </div>
                       )}
                     </div>
@@ -184,7 +185,7 @@ const Card = ({ item, reviews }) => {
                           <SendReview />
                         ) : (
                           <p>
-                            <a href="/login">Авторизуйтесь</a> для того что бы оставить отзыв!
+                            <Link to="/login">Авторизуйтесь</Link> для того что бы оставить отзыв!
                           </p>
                         )}
                       </div>
@@ -200,9 +201,6 @@ const Card = ({ item, reviews }) => {
           <Booking prepayment={item.prepayment} payment_day={item.payment_day} room_object={item.id} />
         </div>
       </div>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-      </Routes>
     </div>
   );
 };

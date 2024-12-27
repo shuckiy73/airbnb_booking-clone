@@ -227,12 +227,12 @@ class GeneralInformationModel(models.Model):
 
 
     kitchen = models.CharField(
-        'kitchen',
+        max_length=50, 
         choices=KITCHEN_CHOICES,
         default=WITHOUT_KITCHEN,
     )  # без кухни; отдельная кухня; кухня-гостинная; кухонная зона
     room_repair = models.CharField(
-        'room repair',
+        max_length=50, 
         choices=REPAIR_CHOICES,
         default=WITHOUT_REPAIR,
     )  # без ремонта; косметический ремонт; евро ремонт; дизайнерский
@@ -439,7 +439,7 @@ class ObjectRoomModel(models.Model):
     prepayment = models.FloatField(default=0.0, verbose_name="Предоплата")  # persent default 20%   default_currency = BYN
     payment_day = models.FloatField(default=0.0, verbose_name="Оплата за сутки")
     payment_method = models.CharField(
-        'payment method',
+        max_length=50,
         choices=PAYMENT_METHOD_CHOICES,
         default=CASH,
         # verbose_name="Метод оплаты"
